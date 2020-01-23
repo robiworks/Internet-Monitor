@@ -42,6 +42,8 @@ Partial Class MainWindow
         Me.Label14 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.Label16 = New System.Windows.Forms.Label()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.Label18 = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'Label1
@@ -217,7 +219,7 @@ Partial Class MainWindow
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label12.ForeColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.Label12.ForeColor = System.Drawing.Color.Yellow
         Me.Label12.Location = New System.Drawing.Point(129, 193)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(36, 17)
@@ -229,7 +231,7 @@ Partial Class MainWindow
         '
         Me.Label13.AutoSize = True
         Me.Label13.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label13.ForeColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.Label13.ForeColor = System.Drawing.Color.Yellow
         Me.Label13.Location = New System.Drawing.Point(129, 228)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(36, 17)
@@ -268,12 +270,38 @@ Partial Class MainWindow
         Me.Label16.Text = "Total upload:"
         Me.Label16.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label17.ForeColor = System.Drawing.Color.Yellow
+        Me.Label17.Location = New System.Drawing.Point(129, 306)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(37, 17)
+        Me.Label17.TabIndex = 20
+        Me.Label17.Text = "0 MB"
+        Me.Label17.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Font = New System.Drawing.Font("Segoe UI", 9.75!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Me.Label18.ForeColor = System.Drawing.Color.Yellow
+        Me.Label18.Location = New System.Drawing.Point(129, 341)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(37, 17)
+        Me.Label18.TabIndex = 21
+        Me.Label18.Text = "0 MB"
+        Me.Label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
         'MainWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 17.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(933, 588)
+        Me.Controls.Add(Me.Label18)
+        Me.Controls.Add(Me.Label17)
         Me.Controls.Add(Me.Label16)
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.Label14)
@@ -324,4 +352,6 @@ Partial Class MainWindow
     Friend WithEvents Label14 As Label
     Friend WithEvents Label15 As Label
     Friend WithEvents Label16 As Label
+    Friend WithEvents Label17 As Label
+    Friend WithEvents Label18 As Label
 End Class

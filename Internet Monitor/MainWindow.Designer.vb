@@ -23,10 +23,10 @@ Partial Class MainWindow
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend3 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series5 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Dim Series6 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.IEComboBox = New System.Windows.Forms.ComboBox()
@@ -52,13 +52,13 @@ Partial Class MainWindow
         Me.SpeedChart = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.ComboBox3 = New System.Windows.Forms.ComboBox()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
+        Me.EnableChartCheckBox = New System.Windows.Forms.CheckBox()
         Me.RefreshIPBtn = New System.Windows.Forms.Button()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.SamplingTimer = New System.Windows.Forms.Timer(Me.components)
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
-        Me.ComboBox1 = New System.Windows.Forms.ComboBox()
+        Me.TimespanComboBox = New System.Windows.Forms.ComboBox()
         CType(Me.SpeedChart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -314,49 +314,55 @@ Partial Class MainWindow
         'SpeedChart
         '
         Me.SpeedChart.BackColor = System.Drawing.Color.FromArgb(CType(CType(84, Byte), Integer), CType(CType(84, Byte), Integer), CType(CType(84, Byte), Integer))
-        ChartArea3.AxisX.IsLabelAutoFit = False
-        ChartArea3.AxisX.LabelStyle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        ChartArea3.AxisX.LabelStyle.ForeColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
-        ChartArea3.AxisX.LineColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
-        ChartArea3.AxisX.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet
-        ChartArea3.AxisX.MajorTickMark.LineColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
-        ChartArea3.AxisY.IsLabelAutoFit = False
-        ChartArea3.AxisY.LabelStyle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        ChartArea3.AxisY.LabelStyle.ForeColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
-        ChartArea3.AxisY.LineColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
-        ChartArea3.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet
-        ChartArea3.AxisY.MajorTickMark.LineColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
-        ChartArea3.BackColor = System.Drawing.Color.FromArgb(CType(CType(84, Byte), Integer), CType(CType(84, Byte), Integer), CType(CType(84, Byte), Integer))
-        ChartArea3.Name = "ChartArea1"
-        Me.SpeedChart.ChartAreas.Add(ChartArea3)
-        Legend3.Alignment = System.Drawing.StringAlignment.Center
-        Legend3.BackColor = System.Drawing.Color.FromArgb(CType(CType(84, Byte), Integer), CType(CType(84, Byte), Integer), CType(CType(84, Byte), Integer))
-        Legend3.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet
-        Legend3.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom
-        Legend3.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Legend3.ForeColor = System.Drawing.Color.White
-        Legend3.IsTextAutoFit = False
-        Legend3.Name = "Legend1"
-        Me.SpeedChart.Legends.Add(Legend3)
-        Me.SpeedChart.Location = New System.Drawing.Point(440, 228)
+        ChartArea1.AxisX.IsLabelAutoFit = False
+        ChartArea1.AxisX.LabelStyle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        ChartArea1.AxisX.LabelStyle.ForeColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
+        ChartArea1.AxisX.LineColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
+        ChartArea1.AxisX.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet
+        ChartArea1.AxisX.MajorTickMark.LineColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
+        ChartArea1.AxisX.Title = "Time elapsed [s]"
+        ChartArea1.AxisX.TitleFont = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        ChartArea1.AxisX.TitleForeColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
+        ChartArea1.AxisY.IsLabelAutoFit = False
+        ChartArea1.AxisY.LabelStyle.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        ChartArea1.AxisY.LabelStyle.ForeColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
+        ChartArea1.AxisY.LineColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
+        ChartArea1.AxisY.MajorGrid.LineDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet
+        ChartArea1.AxisY.MajorTickMark.LineColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
+        ChartArea1.AxisY.Title = "Speed"
+        ChartArea1.AxisY.TitleFont = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        ChartArea1.AxisY.TitleForeColor = System.Drawing.Color.FromArgb(CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer), CType(CType(204, Byte), Integer))
+        ChartArea1.BackColor = System.Drawing.Color.FromArgb(CType(CType(84, Byte), Integer), CType(CType(84, Byte), Integer), CType(CType(84, Byte), Integer))
+        ChartArea1.Name = "ChartArea1"
+        Me.SpeedChart.ChartAreas.Add(ChartArea1)
+        Legend1.Alignment = System.Drawing.StringAlignment.Center
+        Legend1.BackColor = System.Drawing.Color.FromArgb(CType(CType(84, Byte), Integer), CType(CType(84, Byte), Integer), CType(CType(84, Byte), Integer))
+        Legend1.BorderDashStyle = System.Windows.Forms.DataVisualization.Charting.ChartDashStyle.NotSet
+        Legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top
+        Legend1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
+        Legend1.ForeColor = System.Drawing.Color.White
+        Legend1.IsTextAutoFit = False
+        Legend1.Name = "Legend1"
+        Me.SpeedChart.Legends.Add(Legend1)
+        Me.SpeedChart.Location = New System.Drawing.Point(304, 220)
         Me.SpeedChart.Name = "SpeedChart"
-        Series5.BorderWidth = 2
-        Series5.ChartArea = "ChartArea1"
-        Series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
-        Series5.Color = System.Drawing.Color.Lime
-        Series5.Legend = "Legend1"
-        Series5.LegendText = "Download"
-        Series5.Name = "SeriesDownload"
-        Series6.BorderWidth = 2
-        Series6.ChartArea = "ChartArea1"
-        Series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
-        Series6.Color = System.Drawing.Color.DeepSkyBlue
-        Series6.Legend = "Legend1"
-        Series6.LegendText = "Upload"
-        Series6.Name = "SeriesUpload"
-        Me.SpeedChart.Series.Add(Series5)
-        Me.SpeedChart.Series.Add(Series6)
-        Me.SpeedChart.Size = New System.Drawing.Size(481, 348)
+        Series1.BorderWidth = 2
+        Series1.ChartArea = "ChartArea1"
+        Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
+        Series1.Color = System.Drawing.Color.Lime
+        Series1.Legend = "Legend1"
+        Series1.LegendText = "Download"
+        Series1.Name = "SeriesDownload"
+        Series2.BorderWidth = 2
+        Series2.ChartArea = "ChartArea1"
+        Series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
+        Series2.Color = System.Drawing.Color.DeepSkyBlue
+        Series2.Legend = "Legend1"
+        Series2.LegendText = "Upload"
+        Series2.Name = "SeriesUpload"
+        Me.SpeedChart.Series.Add(Series1)
+        Me.SpeedChart.Series.Add(Series2)
+        Me.SpeedChart.Size = New System.Drawing.Size(617, 356)
         Me.SpeedChart.TabIndex = 22
         Me.SpeedChart.Text = "Chart1"
         '
@@ -383,16 +389,16 @@ Partial Class MainWindow
         Me.ComboBox3.Size = New System.Drawing.Size(150, 25)
         Me.ComboBox3.TabIndex = 24
         '
-        'CheckBox1
+        'EnableChartCheckBox
         '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.CheckBox1.Location = New System.Drawing.Point(154, 413)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(96, 21)
-        Me.CheckBox1.TabIndex = 25
-        Me.CheckBox1.Text = "Enable chart"
-        Me.CheckBox1.UseVisualStyleBackColor = True
+        Me.EnableChartCheckBox.AutoSize = True
+        Me.EnableChartCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.EnableChartCheckBox.Location = New System.Drawing.Point(154, 413)
+        Me.EnableChartCheckBox.Name = "EnableChartCheckBox"
+        Me.EnableChartCheckBox.Size = New System.Drawing.Size(96, 21)
+        Me.EnableChartCheckBox.TabIndex = 25
+        Me.EnableChartCheckBox.Text = "Enable chart"
+        Me.EnableChartCheckBox.UseVisualStyleBackColor = True
         '
         'RefreshIPBtn
         '
@@ -410,7 +416,7 @@ Partial Class MainWindow
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Segoe UI", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(238, Byte))
-        Me.Label4.Location = New System.Drawing.Point(758, 195)
+        Me.Label4.Location = New System.Drawing.Point(758, 190)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(163, 21)
         Me.Label4.TabIndex = 28
@@ -443,18 +449,18 @@ Partial Class MainWindow
         Me.Label6.Text = "Chart timespan:"
         Me.Label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'ComboBox1
+        'TimespanComboBox
         '
-        Me.ComboBox1.BackColor = System.Drawing.Color.FromArgb(CType(CType(59, Byte), Integer), CType(CType(59, Byte), Integer), CType(CType(59, Byte), Integer))
-        Me.ComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.ComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.ComboBox1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.ComboBox1.FormattingEnabled = True
-        Me.ComboBox1.Items.AddRange(New Object() {"10 s", "20 s", "30 s", "1 min", "5 min", "10 min"})
-        Me.ComboBox1.Location = New System.Drawing.Point(129, 443)
-        Me.ComboBox1.Name = "ComboBox1"
-        Me.ComboBox1.Size = New System.Drawing.Size(121, 25)
-        Me.ComboBox1.TabIndex = 31
+        Me.TimespanComboBox.BackColor = System.Drawing.Color.FromArgb(CType(CType(59, Byte), Integer), CType(CType(59, Byte), Integer), CType(CType(59, Byte), Integer))
+        Me.TimespanComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.TimespanComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.TimespanComboBox.ForeColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.TimespanComboBox.FormattingEnabled = True
+        Me.TimespanComboBox.Items.AddRange(New Object() {"10 s", "20 s", "30 s", "1 min", "5 min", "10 min"})
+        Me.TimespanComboBox.Location = New System.Drawing.Point(129, 443)
+        Me.TimespanComboBox.Name = "TimespanComboBox"
+        Me.TimespanComboBox.Size = New System.Drawing.Size(121, 25)
+        Me.TimespanComboBox.TabIndex = 31
         '
         'MainWindow
         '
@@ -462,12 +468,12 @@ Partial Class MainWindow
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(933, 588)
-        Me.Controls.Add(Me.ComboBox1)
+        Me.Controls.Add(Me.TimespanComboBox)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.RefreshIPBtn)
-        Me.Controls.Add(Me.CheckBox1)
+        Me.Controls.Add(Me.EnableChartCheckBox)
         Me.Controls.Add(Me.ComboBox3)
         Me.Controls.Add(Me.Label19)
         Me.Controls.Add(Me.SpeedChart)
@@ -529,11 +535,11 @@ Partial Class MainWindow
     Friend WithEvents SpeedChart As DataVisualization.Charting.Chart
     Friend WithEvents Label19 As Label
     Friend WithEvents ComboBox3 As ComboBox
-    Friend WithEvents CheckBox1 As CheckBox
+    Friend WithEvents EnableChartCheckBox As CheckBox
     Friend WithEvents RefreshIPBtn As Button
     Friend WithEvents Label4 As Label
     Friend WithEvents SamplingTimer As Timer
     Friend WithEvents Label5 As Label
     Friend WithEvents Label6 As Label
-    Friend WithEvents ComboBox1 As ComboBox
+    Friend WithEvents TimespanComboBox As ComboBox
 End Class

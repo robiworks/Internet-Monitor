@@ -24,6 +24,11 @@ Public Class MainWindow
     Dim Thread As Threading.Thread = Nothing
     Dim IEConnection As New Connection
     Event IEChangeHandler As NetworkInformation.NetworkAvailabilityChangedEventHandler
+    ' Stvari za graf
+    Private SubtractIndex As Integer
+    Private TotalTime As Integer
+    Private Upload As Long
+    Private Download As Long
     Private Sub MainWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadInterfaceBox()
         UpdateExternalIP()
@@ -34,6 +39,9 @@ Public Class MainWindow
         IEComboBox.ValueMember = "Id"
         AddHandler NetworkChange.NetworkAvailabilityChanged, AddressOf NetworkChanged_Event
         AddHandler NetworkChange.NetworkAddressChanged, AddressOf NetworkAddressChanged_Event
+        ' Aktiviranje grafa
+        TimespanComboBox.SelectedIndex = My.Settings.ChartTimespan
+        InitialiseChart(TimespanComboBox.SelectedIndex)
     End Sub
     Private Sub LoadInterfaceBox()
         Adapters = NetworkInterface.GetAllNetworkInterfaces
@@ -111,8 +119,8 @@ Public Class MainWindow
             Static LastDownload As Long = IEStats.BytesReceived
 
             If StartStatistics = True Then
-                Dim Upload = IEStats.BytesSent - LastUpload ' Upload v zadnji sekundi
-                Dim Download = IEStats.BytesReceived - LastDownload ' Download v zadnji sekundi
+                Upload = IEStats.BytesSent - LastUpload ' Upload v zadnji sekundi
+                Download = IEStats.BytesReceived - LastDownload ' Download v zadnji sekundi
                 UploadSpeedLabel.Text = ByteConvert(If(Upload < 0, 0, Upload)) & "/s"
                 DownloadSpeedLabel.Text = ByteConvert(If(Download < 0, 0, Download)) & "/s"
             End If
@@ -129,6 +137,10 @@ Public Class MainWindow
     Private Sub SamplingTimer_Tick(sender As Object, e As EventArgs) Handles SamplingTimer.Tick
         If IEComboBox.SelectedIndex >= 0 Then ' Preveri, ce je sploh izbran kateri adapter
             ComputeSpeed() ' Ce je, racuna hitrost, prenos itd.
+        End If
+        If EnableChartCheckBox.Checked = True Then ' Ce je graf omogocen, ga inicializira in zacne risati
+            InitialiseChart(TimespanComboBox.SelectedIndex)
+            DrawChart(TotalTime)
         End If
     End Sub
     Private Sub RefreshIPBtn_Click(sender As Object, e As EventArgs) Handles RefreshIPBtn.Click
@@ -152,5 +164,72 @@ Public Class MainWindow
     End Sub
     Private Sub CopyExternalIPButton_Click(sender As Object, e As EventArgs) Handles CopyExternalIPButton.Click
         Clipboard.SetText(ExternalIPLabel.Text)
+    End Sub
+    ' Koda za graf od tu naprej >>>
+    Private Sub InitialiseChart(TimespanIndex As Integer) ' inicializacija dinamicnega grafa
+        If EnableChartCheckBox.Checked = True Then
+            Select Case TimespanIndex
+                Case 0
+                    SubtractIndex = 10
+                    SpeedChart.ChartAreas(0).AxisX.Interval = 1
+                Case 1
+                    SubtractIndex = 20
+                    SpeedChart.ChartAreas(0).AxisX.Interval = 2
+                Case 2
+                    SubtractIndex = 30
+                    SpeedChart.ChartAreas(0).AxisX.Interval = 5
+                Case 3
+                    SubtractIndex = 60
+                    SpeedChart.ChartAreas(0).AxisX.Interval = 10
+                Case 4
+                    SubtractIndex = 300
+                    SpeedChart.ChartAreas(0).AxisX.Interval = 30
+                Case 5
+                    SubtractIndex = 6000
+                    SpeedChart.ChartAreas(0).AxisX.Interval = 60
+            End Select
+        End If
+    End Sub
+    Private Sub DrawChart(TimeSeconds As Integer)
+        If TimeSeconds > SubtractIndex Then
+            SpeedChart.ChartAreas(0).AxisX.Minimum = TimeSeconds - SubtractIndex
+            SpeedChart.ChartAreas(0).AxisX.Maximum = TimeSeconds
+        Else
+            SpeedChart.ChartAreas(0).AxisX.Minimum = 0
+            SpeedChart.ChartAreas(0).AxisX.Maximum = TimeSeconds
+        End If
+
+        ' Zaenkrat kaze graf hitrost samo v kB/s !!
+        Dim kB As Long = 1024
+        Dim UploadValue As Long
+        Dim DownloadValue As Long
+        If Upload >= kB Then
+            UploadValue = Upload / kB
+        Else
+            UploadValue = 0
+        End If
+        If Download >= kB Then
+            DownloadValue = Download / kB
+        Else
+            DownloadValue = 0
+        End If
+
+        SpeedChart.Series("SeriesDownload").Points.AddXY(TimeSeconds, DownloadValue)
+        SpeedChart.Series("SeriesUpload").Points.AddXY(TimeSeconds, UploadValue)
+        TotalTime += 1
+    End Sub
+    Private Sub TimespanComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TimespanComboBox.SelectedIndexChanged
+        My.Settings.ChartTimespan = TimespanComboBox.SelectedIndex ' Shrani timespan za graf v nastavitve, ki se ohranijo za nov startup
+        My.Settings.Save()
+    End Sub
+    Private Sub EnableChartCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles EnableChartCheckBox.CheckedChanged
+        Select Case EnableChartCheckBox.Checked
+            Case True
+                InitialiseChart(TimespanComboBox.SelectedIndex)
+            Case False
+                SpeedChart.Series("SeriesDownload").Points.Clear() ' Ce graf ni (vec) omogocen, pocisti vse tocke download in upload grafa
+                SpeedChart.Series("SeriesUpload").Points.Clear()
+                TotalTime = 0 ' in ponastavi skupni cas (za risanje na X os) na default vrednost 0.
+        End Select
     End Sub
 End Class

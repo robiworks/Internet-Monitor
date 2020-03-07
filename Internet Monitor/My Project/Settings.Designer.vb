@@ -77,6 +77,18 @@ Namespace My
                 Me("ChartTimespan") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("0")>  _
+        Public Property ColourTheme() As Integer
+            Get
+                Return CType(Me("ColourTheme"),Integer)
+            End Get
+            Set
+                Me("ColourTheme") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

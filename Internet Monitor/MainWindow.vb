@@ -15,7 +15,7 @@ Public Class MainWindow
     ' --- LIGHT THEME ---
     ' BackColour           : 500 #EDEDED, 600 #D4D4D4, 700 #BABABA, 800 #A1A1A1, 900 #878787
     ' Primary ForeColour   : 500 #000000, 400 #1A1A1A, 300 #333333, 200 #4D4D4D, 100 #666666
-    ' Secondary ForeColour :
+    ' Secondary ForeColour : 500 #0000FF, 400 #1A1AFF, 300 #3333FF, 200 #4D4DFF, 100 #6666FF
 
     Dim Adapters As NetworkInterface() = NetworkInterface.GetAllNetworkInterfaces()
     Private IECurrent As NetworkInterface
@@ -30,6 +30,10 @@ Public Class MainWindow
     Private Upload As Long
     Private Download As Long
     Private Sub MainWindow_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        ' Nalaganje uporabnikovih nastavitev.
+        ColourThemeComboBox.SelectedIndex = My.Settings.ColourTheme
+        TimespanComboBox.SelectedIndex = My.Settings.ChartTimespan
+        ' Startup drugih programskih funkcij.
         LoadInterfaceBox()
         UpdateExternalIP()
         Thread = New Threading.Thread(AddressOf UpdateExternalIP)
@@ -39,8 +43,7 @@ Public Class MainWindow
         IEComboBox.ValueMember = "Id"
         AddHandler NetworkChange.NetworkAvailabilityChanged, AddressOf NetworkChanged_Event
         AddHandler NetworkChange.NetworkAddressChanged, AddressOf NetworkAddressChanged_Event
-        ' Aktiviranje grafa
-        TimespanComboBox.SelectedIndex = My.Settings.ChartTimespan
+        ' Aktiviranje grafa.
         InitialiseChart(TimespanComboBox.SelectedIndex)
     End Sub
     Private Sub LoadInterfaceBox()
@@ -51,11 +54,11 @@ Public Class MainWindow
             Me.Invoke(d, New Object() {Nothing, Nothing})
         Else
             IEComboBox.Items.Clear()
-            For Each networkIE As NetworkInterface In IEConnection.GetInterface ' Nalozi vse primerne adapterje v ComboBox
+            For Each networkIE As NetworkInterface In IEConnection.GetInterface ' Nalozi vse primerne adapterje v ComboBox.
                 IEComboBox.Items.Add(networkIE)
             Next
             For Each adapter As NetworkInterface In IEComboBox.Items
-                If adapter.Name.Equals(My.Settings.LastAdapter) Then ' Ce je user zadnjic ze izbral adapter, izbere tega avtomatsko
+                If adapter.Name.Equals(My.Settings.LastAdapter) Then ' Ce je user zadnjic ze izbral adapter, izbere tega avtomatsko.
                     IEComboBox.SelectedItem = adapter
                 End If
             Next
@@ -76,10 +79,10 @@ Public Class MainWindow
         End If
     End Sub
     Private Sub UpdateExternalIP()
-        ExternalIPLabel.Text = IEConnection.FetchExternalIP ' Prejme external IP naslov iz podatkov o povezavi
+        ExternalIPLabel.Text = IEConnection.FetchExternalIP ' Prejme external IP naslov iz podatkov o povezavi.
     End Sub
     Private Sub NetworkChanged_Event(ByVal sender As Object, ByVal e As NetworkInformation.NetworkAvailabilityEventArgs)
-        LoadInterfaceBox() ' Ob spremembi networka se ComboBox na novo napolni z adapterji
+        LoadInterfaceBox() ' Ob spremembi networka se ComboBox na novo napolni z adapterji.
     End Sub
     Private Sub NetworkAddressChanged_Event(ByVal sender As Object, ByVal e As EventArgs)
         LoadInterfaceBox()
@@ -95,7 +98,7 @@ Public Class MainWindow
         Dim MB As Long = kB * kB
         Dim GB As Long = kB * kB * kB
         Dim TB As Long = kB * kB * kB * kB
-        Dim ByteValue As String = "0 B" ' Zacetni string / kolicina podatkov je 0 B
+        Dim ByteValue As String = "0 B" ' Zacetni string / kolicina podatkov je 0 B.
 
         Select Case bytes
             Case Is <= kB
@@ -112,33 +115,33 @@ Public Class MainWindow
 
         Return ByteValue.ToString ' Vrne kolicino podatkov pretvorjeno v kB, MB, GB, TB ...
     End Function
-    Private Sub ComputeSpeed() ' Racunanje trenutne hitrosti in skupnega prenosa
+    Private Sub ComputeSpeed() ' Racunanje trenutne hitrosti in skupnega prenosa.
         Try
             Dim IEStats As IPv4InterfaceStatistics = IEComboBox.SelectedItem.GetIPv4Statistics
             Static LastUpload As Long = IEStats.BytesSent
             Static LastDownload As Long = IEStats.BytesReceived
 
             If StartStatistics = True Then
-                Upload = IEStats.BytesSent - LastUpload ' Upload v zadnji sekundi
-                Download = IEStats.BytesReceived - LastDownload ' Download v zadnji sekundi
+                Upload = IEStats.BytesSent - LastUpload ' Upload v zadnji sekundi.
+                Download = IEStats.BytesReceived - LastDownload ' Download v zadnji sekundi.
                 UploadSpeedLabel.Text = ByteConvert(If(Upload < 0, 0, Upload)) & "/s"
                 DownloadSpeedLabel.Text = ByteConvert(If(Download < 0, 0, Download)) & "/s"
             End If
 
             LastUpload = IEStats.BytesSent
             LastDownload = IEStats.BytesReceived
-            TotalUploadLabel.Text = ByteConvert(IEStats.BytesSent) ' Skupen upload v seji iz IPv4 statistike
-            TotalDownloadLabel.Text = ByteConvert(IEStats.BytesReceived) ' Skupen download v seji iz IPv4 statistike
+            TotalUploadLabel.Text = ByteConvert(IEStats.BytesSent) ' Skupen upload v seji iz IPv4 statistike.
+            TotalDownloadLabel.Text = ByteConvert(IEStats.BytesReceived) ' Skupen download v seji iz IPv4 statistike.
 
             StartStatistics = True
         Catch ex As Exception
         End Try
     End Sub
     Private Sub SamplingTimer_Tick(sender As Object, e As EventArgs) Handles SamplingTimer.Tick
-        If IEComboBox.SelectedIndex >= 0 Then ' Preveri, ce je sploh izbran kateri adapter
+        If IEComboBox.SelectedIndex >= 0 Then ' Preveri, ce je sploh izbran kateri adapter.
             ComputeSpeed() ' Ce je, racuna hitrost, prenos itd.
         End If
-        If EnableChartCheckBox.Checked = True Then ' Ce je graf omogocen, ga inicializira in zacne risati
+        If EnableChartCheckBox.Checked = True Then ' Ce je graf omogocen, ga inicializira in zacne risati.
             InitialiseChart(TimespanComboBox.SelectedIndex)
             DrawChart(TotalTime)
         End If
@@ -166,7 +169,7 @@ Public Class MainWindow
         Clipboard.SetText(ExternalIPLabel.Text)
     End Sub
     ' Koda za graf od tu naprej >>>
-    Private Sub InitialiseChart(TimespanIndex As Integer) ' inicializacija dinamicnega grafa
+    Private Sub InitialiseChart(TimespanIndex As Integer) ' Inicializacija dinamicnega grafa.
         If EnableChartCheckBox.Checked = True Then
             Select Case TimespanIndex
                 Case 0
@@ -201,6 +204,7 @@ Public Class MainWindow
 
         ' Zaenkrat kaze graf hitrost samo v kB/s !!
         Dim kB As Long = 1024
+        Dim MB As Long = kB * kB
         Dim UploadValue As Long
         Dim DownloadValue As Long
         If Upload >= kB Then
@@ -219,7 +223,7 @@ Public Class MainWindow
         TotalTime += 1
     End Sub
     Private Sub TimespanComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TimespanComboBox.SelectedIndexChanged
-        My.Settings.ChartTimespan = TimespanComboBox.SelectedIndex ' Shrani timespan za graf v nastavitve, ki se ohranijo za nov startup
+        My.Settings.ChartTimespan = TimespanComboBox.SelectedIndex ' Shrani timespan za graf v nastavitve, ki se ohranijo za nov startup.
         My.Settings.Save()
     End Sub
     Private Sub EnableChartCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles EnableChartCheckBox.CheckedChanged
@@ -231,5 +235,37 @@ Public Class MainWindow
                 SpeedChart.Series("SeriesUpload").Points.Clear()
                 TotalTime = 0 ' in ponastavi skupni cas (za risanje na X os) na default vrednost 0.
         End Select
+    End Sub
+    ' Koda za colour theme od tu naprej >>>
+    Private Sub UpdateColourTheme(theme As Integer)
+        Dim BackColour(,) As String = {{"#212121", "#EDEDED"}, {"#3B3B3B", "#D4D4D4"}, {"#545454", "#BABABA"}, {"#6E6E6E", "#A1A1A1"}, {"#878787", "#878787"}}
+        Dim PrimaryForeColour(,) As String = {{"#FFFFFF", "#000000"}, {"#E6E6E6", "#1A1A1A"}, {"#CCCCCC", "#333333"}, {"#B3B3B3", "#4D4D4D"}, {"#999999", "#666666"}}
+        Dim SecondaryForeColour(,) As String = {{"#FFFF00", "#0000FF"}, {"#E6E600", "#1A1AFF"}, {"#CCCC00", "#3333FF"}, {"#B3B300", "#4D4DFF"}, {"#999900", "#6666FF"}}
+        Me.BackColor = ColorTranslator.FromHtml(BackColour.GetValue(0, theme))
+        For Each ctl As Control In Me.Controls
+            Select Case ctl.Tag
+                Case "TitleLabel"
+                    ctl.ForeColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(0, theme))
+                Case "PermanentLabel"
+                    ctl.ForeColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(0, theme))
+                Case "ModifiableLabel"
+                    ctl.ForeColor = ColorTranslator.FromHtml(SecondaryForeColour.GetValue(0, theme))
+                Case "ComboBoxCT"
+                    ctl.BackColor = ColorTranslator.FromHtml(BackColour.GetValue(1, theme))
+                    ctl.ForeColor = ColorTranslator.FromHtml(SecondaryForeColour.GetValue(1, theme))
+                Case "ButtonCT"
+                    ctl.BackColor = ColorTranslator.FromHtml(BackColour.GetValue(1, theme))
+                    ctl.ForeColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(1, theme))
+                Case "CheckBoxCT"
+                    ctl.ForeColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(0, theme))
+            End Select
+        Next
+    End Sub
+    Private Sub ColourThemeComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ColourThemeComboBox.SelectedIndexChanged
+        If ColourThemeComboBox.SelectedIndex >= 0 Then
+            UpdateColourTheme(ColourThemeComboBox.SelectedIndex)
+            My.Settings.ColourTheme = ColourThemeComboBox.SelectedIndex
+            My.Settings.Save()
+        End If
     End Sub
 End Class

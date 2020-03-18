@@ -27,6 +27,8 @@ Partial Class MainWindow
         Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
         Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Series4 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainWindow))
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label2 = New System.Windows.Forms.Label()
@@ -51,8 +53,6 @@ Partial Class MainWindow
         Me.TotalDownloadLabel = New System.Windows.Forms.Label()
         Me.TotalUploadLabel = New System.Windows.Forms.Label()
         Me.SpeedChart = New System.Windows.Forms.DataVisualization.Charting.Chart()
-        Me.Label19 = New System.Windows.Forms.Label()
-        Me.LanguageComboBox = New System.Windows.Forms.ComboBox()
         Me.EnableChartCheckBox = New System.Windows.Forms.CheckBox()
         Me.RefreshIPBtn = New System.Windows.Forms.Button()
         Me.Label4 = New System.Windows.Forms.Label()
@@ -60,6 +60,8 @@ Partial Class MainWindow
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.TimespanComboBox = New System.Windows.Forms.ComboBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.YAxisUnitComboBox = New System.Windows.Forms.ComboBox()
         CType(Me.SpeedChart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -380,36 +382,29 @@ Partial Class MainWindow
         Series2.Legend = "Legend1"
         Series2.LegendText = "Upload"
         Series2.Name = "SeriesUpload"
+        Series3.BorderWidth = 2
+        Series3.ChartArea = "ChartArea1"
+        Series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
+        Series3.Color = System.Drawing.Color.Lime
+        Series3.Enabled = False
+        Series3.Legend = "Legend1"
+        Series3.LegendText = "Download"
+        Series3.Name = "SeriesDownloadMB"
+        Series4.BorderWidth = 2
+        Series4.ChartArea = "ChartArea1"
+        Series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
+        Series4.Color = System.Drawing.Color.DeepSkyBlue
+        Series4.Enabled = False
+        Series4.Legend = "Legend1"
+        Series4.LegendText = "Upload"
+        Series4.Name = "SeriesUploadMB"
         Me.SpeedChart.Series.Add(Series1)
         Me.SpeedChart.Series.Add(Series2)
+        Me.SpeedChart.Series.Add(Series3)
+        Me.SpeedChart.Series.Add(Series4)
         Me.SpeedChart.Size = New System.Drawing.Size(617, 356)
         Me.SpeedChart.TabIndex = 22
-        Me.SpeedChart.Text = "Chart1"
-        '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(697, 74)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(68, 17)
-        Me.Label19.TabIndex = 23
-        Me.Label19.Tag = "PermanentLabel"
-        Me.Label19.Text = "Language:"
-        Me.Label19.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'LanguageComboBox
-        '
-        Me.LanguageComboBox.BackColor = System.Drawing.Color.FromArgb(CType(CType(59, Byte), Integer), CType(CType(59, Byte), Integer), CType(CType(59, Byte), Integer))
-        Me.LanguageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.LanguageComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.LanguageComboBox.ForeColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(0, Byte), Integer))
-        Me.LanguageComboBox.FormattingEnabled = True
-        Me.LanguageComboBox.Items.AddRange(New Object() {"English", "Slovenian"})
-        Me.LanguageComboBox.Location = New System.Drawing.Point(771, 71)
-        Me.LanguageComboBox.Name = "LanguageComboBox"
-        Me.LanguageComboBox.Size = New System.Drawing.Size(150, 25)
-        Me.LanguageComboBox.TabIndex = 24
-        Me.LanguageComboBox.Tag = "ComboBoxCT"
+        Me.SpeedChart.Tag = ""
         '
         'EnableChartCheckBox
         '
@@ -490,20 +485,45 @@ Partial Class MainWindow
         Me.TimespanComboBox.TabIndex = 31
         Me.TimespanComboBox.Tag = "ComboBoxCT"
         '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(51, 480)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(71, 17)
+        Me.Label12.TabIndex = 32
+        Me.Label12.Tag = "PermanentLabel"
+        Me.Label12.Text = "Y-Axis unit:"
+        Me.Label12.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'YAxisUnitComboBox
+        '
+        Me.YAxisUnitComboBox.BackColor = System.Drawing.Color.FromArgb(CType(CType(59, Byte), Integer), CType(CType(59, Byte), Integer), CType(CType(59, Byte), Integer))
+        Me.YAxisUnitComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.YAxisUnitComboBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.YAxisUnitComboBox.ForeColor = System.Drawing.Color.FromArgb(CType(CType(230, Byte), Integer), CType(CType(230, Byte), Integer), CType(CType(0, Byte), Integer))
+        Me.YAxisUnitComboBox.FormattingEnabled = True
+        Me.YAxisUnitComboBox.Items.AddRange(New Object() {"kB/s", "MB/s"})
+        Me.YAxisUnitComboBox.Location = New System.Drawing.Point(129, 477)
+        Me.YAxisUnitComboBox.Name = "YAxisUnitComboBox"
+        Me.YAxisUnitComboBox.Size = New System.Drawing.Size(121, 25)
+        Me.YAxisUnitComboBox.TabIndex = 33
+        Me.YAxisUnitComboBox.Tag = "ComboBoxCT"
+        '
         'MainWindow
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(7.0!, 17.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer), CType(CType(33, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(933, 560)
+        Me.Controls.Add(Me.YAxisUnitComboBox)
+        Me.Controls.Add(Me.Label12)
         Me.Controls.Add(Me.TimespanComboBox)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.RefreshIPBtn)
         Me.Controls.Add(Me.EnableChartCheckBox)
-        Me.Controls.Add(Me.LanguageComboBox)
-        Me.Controls.Add(Me.Label19)
         Me.Controls.Add(Me.SpeedChart)
         Me.Controls.Add(Me.TotalUploadLabel)
         Me.Controls.Add(Me.TotalDownloadLabel)
@@ -562,8 +582,6 @@ Partial Class MainWindow
     Friend WithEvents TotalDownloadLabel As Label
     Friend WithEvents TotalUploadLabel As Label
     Friend WithEvents SpeedChart As DataVisualization.Charting.Chart
-    Friend WithEvents Label19 As Label
-    Friend WithEvents LanguageComboBox As ComboBox
     Friend WithEvents EnableChartCheckBox As CheckBox
     Friend WithEvents RefreshIPBtn As Button
     Friend WithEvents Label4 As Label
@@ -571,4 +589,6 @@ Partial Class MainWindow
     Friend WithEvents Label5 As Label
     Friend WithEvents Label6 As Label
     Friend WithEvents TimespanComboBox As ComboBox
+    Friend WithEvents Label12 As Label
+    Friend WithEvents YAxisUnitComboBox As ComboBox
 End Class

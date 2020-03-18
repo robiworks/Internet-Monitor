@@ -33,6 +33,7 @@ Public Class MainWindow
         ' Nalaganje uporabnikovih nastavitev.
         ColourThemeComboBox.SelectedIndex = My.Settings.ColourTheme
         TimespanComboBox.SelectedIndex = My.Settings.ChartTimespan
+        YAxisUnitComboBox.SelectedIndex = My.Settings.YAxisUnit
         ' Startup drugih programskih funkcij.
         LoadInterfaceBox()
         UpdateExternalIP()
@@ -85,11 +86,11 @@ Public Class MainWindow
         LoadInterfaceBox() ' Ob spremembi networka se ComboBox na novo napolni z adapterji.
     End Sub
     Private Sub NetworkAddressChanged_Event(ByVal sender As Object, ByVal e As EventArgs)
-        LoadInterfaceBox()
+        LoadInterfaceBox() ' Ob spremembi IP naslova se ComboBox na novo napolni z adapterji.
         Invoke(New MethodInvoker(Sub()
                                      If IEComboBox.SelectedIndex > -1 Then
                                          Dim IPAddress = (CType(IEComboBox.SelectedItem, NetworkInterface)).GetIPProperties.UnicastAddresses(0).Address.ToString
-                                         InternalIPLabel.Text = IPAddress
+                                         InternalIPLabel.Text = IPAddress ' Izpise se nov IP.
                                      End If
                                  End Sub))
     End Sub
@@ -163,63 +164,75 @@ Public Class MainWindow
         End Try
     End Sub
     Private Sub CopyInternalIPButton_Click(sender As Object, e As EventArgs) Handles CopyInternalIPButton.Click
-        Clipboard.SetText(InternalIPLabel.Text)
+        Clipboard.SetText(InternalIPLabel.Text) ' Kopira internal IP v uporabnikov clipboard.
     End Sub
     Private Sub CopyExternalIPButton_Click(sender As Object, e As EventArgs) Handles CopyExternalIPButton.Click
-        Clipboard.SetText(ExternalIPLabel.Text)
+        Clipboard.SetText(ExternalIPLabel.Text) ' Kopira external IP v uporabnikov clipboard.
     End Sub
     ' Koda za graf od tu naprej >>>
     Private Sub InitialiseChart(TimespanIndex As Integer) ' Inicializacija dinamicnega grafa.
-        If EnableChartCheckBox.Checked = True Then
+        If EnableChartCheckBox.Checked = True Then ' SubtractIndex se uporabi za dinamicno premikanje grafa (nastavljanje min/max vrednosti na X osi).
             Select Case TimespanIndex
                 Case 0
-                    SubtractIndex = 10
+                    SubtractIndex = 10 ' 10 s
                     SpeedChart.ChartAreas(0).AxisX.Interval = 1
                 Case 1
-                    SubtractIndex = 20
+                    SubtractIndex = 20 ' 20 s
                     SpeedChart.ChartAreas(0).AxisX.Interval = 2
                 Case 2
-                    SubtractIndex = 30
+                    SubtractIndex = 30 ' 30 s
                     SpeedChart.ChartAreas(0).AxisX.Interval = 5
                 Case 3
-                    SubtractIndex = 60
+                    SubtractIndex = 60 ' 60 s
                     SpeedChart.ChartAreas(0).AxisX.Interval = 10
                 Case 4
-                    SubtractIndex = 300
+                    SubtractIndex = 300 ' 300 s = 5 min
                     SpeedChart.ChartAreas(0).AxisX.Interval = 30
                 Case 5
-                    SubtractIndex = 6000
+                    SubtractIndex = 600 ' 600 s = 10 min
                     SpeedChart.ChartAreas(0).AxisX.Interval = 60
             End Select
         End If
     End Sub
-    Private Sub DrawChart(TimeSeconds As Integer)
+    Private Sub DrawChart(TimeSeconds As Integer) ' Dinamicni graf.
         If TimeSeconds > SubtractIndex Then
-            SpeedChart.ChartAreas(0).AxisX.Minimum = TimeSeconds - SubtractIndex
-            SpeedChart.ChartAreas(0).AxisX.Maximum = TimeSeconds
+            SpeedChart.ChartAreas(0).AxisX.Minimum = TimeSeconds - SubtractIndex ' Ce je pretecen cas vecji od indeksa za izbran casovni interval,
+            SpeedChart.ChartAreas(0).AxisX.Maximum = TimeSeconds ' se minimalni cas in maksimalni cas dinamicno premikata.
         Else
-            SpeedChart.ChartAreas(0).AxisX.Minimum = 0
-            SpeedChart.ChartAreas(0).AxisX.Maximum = TimeSeconds
+            SpeedChart.ChartAreas(0).AxisX.Minimum = 0 ' Ce je pretecen cas manjsi od indeksa za izbran casovni interval,
+            SpeedChart.ChartAreas(0).AxisX.Maximum = TimeSeconds ' je minimalni cas enak 0, maksimalni pa trenutnemu pretecenemu casu.
         End If
 
-        ' Zaenkrat kaze graf hitrost samo v kB/s !!
+        ' Risanje grafa .. hitrost kaze v kB/s ali MB/s, glede na izbiro uporabnika.
         Dim kB As Long = 1024
         Dim MB As Long = kB * kB
-        Dim UploadValue As Long
-        Dim DownloadValue As Long
+
+        Dim UploadValue As Double
+        Dim DownloadValue As Double
+        Dim UploadValueMB As Double
+        Dim DownloadValueMB As Double
+
         If Upload >= kB Then
             UploadValue = Upload / kB
+            UploadValueMB = Upload / MB
         Else
             UploadValue = 0
+            UploadValueMB = 0
         End If
+
         If Download >= kB Then
             DownloadValue = Download / kB
+            DownloadValueMB = Download / MB
         Else
             DownloadValue = 0
+            DownloadValueMB = 0
         End If
 
         SpeedChart.Series("SeriesDownload").Points.AddXY(TimeSeconds, DownloadValue)
+        SpeedChart.Series("SeriesDownloadMB").Points.AddXY(TimeSeconds, DownloadValueMB)
         SpeedChart.Series("SeriesUpload").Points.AddXY(TimeSeconds, UploadValue)
+        SpeedChart.Series("SeriesUploadMB").Points.AddXY(TimeSeconds, UploadValueMB)
+
         TotalTime += 1
     End Sub
     Private Sub TimespanComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TimespanComboBox.SelectedIndexChanged
@@ -233,6 +246,8 @@ Public Class MainWindow
             Case False
                 SpeedChart.Series("SeriesDownload").Points.Clear() ' Ce graf ni (vec) omogocen, pocisti vse tocke download in upload grafa
                 SpeedChart.Series("SeriesUpload").Points.Clear()
+                SpeedChart.Series("SeriesDownloadMB").Points.Clear()
+                SpeedChart.Series("SeriesUploadMB").Points.Clear()
                 TotalTime = 0 ' in ponastavi skupni cas (za risanje na X os) na default vrednost 0.
         End Select
     End Sub
@@ -241,6 +256,8 @@ Public Class MainWindow
         Dim BackColour(,) As String = {{"#212121", "#EDEDED"}, {"#3B3B3B", "#D4D4D4"}, {"#545454", "#BABABA"}, {"#6E6E6E", "#A1A1A1"}, {"#878787", "#878787"}}
         Dim PrimaryForeColour(,) As String = {{"#FFFFFF", "#000000"}, {"#E6E6E6", "#1A1A1A"}, {"#CCCCCC", "#333333"}, {"#B3B3B3", "#4D4D4D"}, {"#999999", "#666666"}}
         Dim SecondaryForeColour(,) As String = {{"#FFFF00", "#0000FF"}, {"#E6E600", "#1A1AFF"}, {"#CCCC00", "#3333FF"}, {"#B3B300", "#4D4DFF"}, {"#999900", "#6666FF"}}
+        Dim ChartLineColour(,) As Color = {{Color.Lime, Color.DarkRed}, {Color.DeepSkyBlue, Color.DarkBlue}}
+
         Me.BackColor = ColorTranslator.FromHtml(BackColour.GetValue(0, theme))
         For Each ctl As Control In Me.Controls
             Select Case ctl.Tag
@@ -260,6 +277,24 @@ Public Class MainWindow
                     ctl.ForeColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(0, theme))
             End Select
         Next
+        With SpeedChart
+            .BackColor = ColorTranslator.FromHtml(BackColour.GetValue(1, theme))
+            .Legends(0).BackColor = ColorTranslator.FromHtml(BackColour.GetValue(1, theme))
+            .Legends(0).ForeColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(1, theme))
+            .ChartAreas(0).BackColor = ColorTranslator.FromHtml(BackColour.GetValue(1, theme))
+            .ChartAreas(0).AxisX.LineColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(1, theme))
+            .ChartAreas(0).AxisY.LineColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(1, theme))
+            .ChartAreas(0).AxisX.TitleForeColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(1, theme))
+            .ChartAreas(0).AxisY.TitleForeColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(1, theme))
+            .ChartAreas(0).AxisX.MajorTickMark.LineColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(1, theme))
+            .ChartAreas(0).AxisY.MajorTickMark.LineColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(1, theme))
+            .ChartAreas(0).AxisX.LabelStyle.ForeColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(1, theme))
+            .ChartAreas(0).AxisY.LabelStyle.ForeColor = ColorTranslator.FromHtml(PrimaryForeColour.GetValue(1, theme))
+            .Series(0).Color = ChartLineColour.GetValue(0, theme)
+            .Series(2).Color = ChartLineColour.GetValue(0, theme)
+            .Series(1).Color = ChartLineColour.GetValue(1, theme)
+            .Series(3).Color = ChartLineColour.GetValue(1, theme)
+        End With
     End Sub
     Private Sub ColourThemeComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ColourThemeComboBox.SelectedIndexChanged
         If ColourThemeComboBox.SelectedIndex >= 0 Then
@@ -267,5 +302,24 @@ Public Class MainWindow
             My.Settings.ColourTheme = ColourThemeComboBox.SelectedIndex
             My.Settings.Save()
         End If
+    End Sub
+    Private Sub YAxisUnitComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles YAxisUnitComboBox.SelectedIndexChanged
+        Select Case YAxisUnitComboBox.SelectedIndex
+            Case 0
+                SpeedChart.Series("SeriesDownload").Enabled = True
+                SpeedChart.Series("SeriesUpload").Enabled = True
+                SpeedChart.ChartAreas(0).AxisY.Title = "Speed [kB/s]"
+                SpeedChart.Series("SeriesDownloadMB").Enabled = False
+                SpeedChart.Series("SeriesUploadMB").Enabled = False
+                My.Settings.YAxisUnit = YAxisUnitComboBox.SelectedIndex
+            Case 1
+                SpeedChart.Series("SeriesDownload").Enabled = False
+                SpeedChart.Series("SeriesUpload").Enabled = False
+                SpeedChart.ChartAreas(0).AxisY.Title = "Speed [MB/s]"
+                SpeedChart.Series("SeriesDownloadMB").Enabled = True
+                SpeedChart.Series("SeriesUploadMB").Enabled = True
+                My.Settings.YAxisUnit = YAxisUnitComboBox.SelectedIndex
+        End Select
+        My.Settings.Save()
     End Sub
 End Class

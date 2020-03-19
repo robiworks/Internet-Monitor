@@ -66,7 +66,7 @@ Public Class MainWindow
         End If
     End Sub
     Private Sub IEComboBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles IEComboBox.SelectedIndexChanged
-        If IEComboBox.SelectedIndex > -1 Then
+        If IEComboBox.SelectedIndex >= 0 Then
             IECurrent = IEComboBox.SelectedItem
             Dim InterfaceIP As IPInterfaceProperties = IECurrent.GetIPProperties
             Dim IPAddress As UnicastIPAddressInformationCollection = InterfaceIP.UnicastAddresses

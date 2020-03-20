@@ -551,6 +551,9 @@ Partial Class MainWindow
         Me.ForeColor = System.Drawing.Color.White
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(949, 598)
+        Me.MinimumSize = New System.Drawing.Size(949, 598)
         Me.Name = "MainWindow"
         Me.Text = "Internet Monitor"
         CType(Me.SpeedChart, System.ComponentModel.ISupportInitialize).EndInit()
